@@ -1,10 +1,7 @@
 ﻿  Compiling CUDA source file src\kernel.cu...
   
   C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\bin\HostX64\x64" -x cu   -I"C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\/Common" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\include" -I"c:\cs398\CUDA Samples\v11.7\Common" -I"C:\Users\User\Documents\RTIS\Y3Tri2\2170 Vulkan+CUDA\CUDA Common Include\CUDA Samples\v11.7\Common" -I"C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\/Common" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.7\include"  -G   --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Fdx64\Debug\vc143.pdb /FS /Zi /RTC1 /MDd " -o "C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\x64\Debug\kernel.cu.obj" "C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\src\kernel.cu" 
+  crt/host_defines.h is an internal header file and must not be used directly.  Please use cuda_runtime_api.h or cuda_runtime.h instead.
   kernel.cu
-  helper.cpp
-  main.cpp
-  Generating Code...
-     Creating library C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\x64\Debug\A2.lib and object C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\x64\Debug\A2.exp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  crt/host_defines.h is an internal header file and must not be used directly.  Please use cuda_runtime_api.h or cuda_runtime.h instead.
   A2.vcxproj -> C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\x64\Debug\A2.exe
