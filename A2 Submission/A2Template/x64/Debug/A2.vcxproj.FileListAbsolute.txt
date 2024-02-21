@@ -1,0 +1,2 @@
+C:\Users\User\Documents\RTIS\Y3Tri2\2170 Vulkan+CUDA\A2 Submission\A2Template\x64\Debug\A2.exe
+C:\Users\User\Documents\GitHub\CUDAmatrixMultiplication\A2 Submission\A2Template\x64\Debug\A2.exe
