@@ -1,0 +1,70 @@
+//this file only fails compliance
+
+#include <helper_cuda.h>
+#include "helper.h"
+#include <cuda_runtime.h> //FIX __global__ and __shared__ undefined
+#include <device_launch_parameters.h> //fix blockIdx undefined
+
+// P and M column-major, N row-major
+__global__ void matrixMultiply(FLOAT_TYPE* P,       // [out] and mxn matrix
+                               const FLOAT_TYPE* M, // [in] an mxk matrix
+                               const FLOAT_TYPE* N, // [in] an kxn matrix
+                               const int m, const int n, const int k) 
+{
+    // Shared memory for tiling input N array, DO NOT EDIT
+    __shared__ FLOAT_TYPE N_s[TILE_WIDTH_RATIO_K][TILE_WIDTH_N];
+
+    int bx = blockIdx.x;
+    int by = blockIdx.y;
+    int tx = threadIdx.x;
+
+    // Index for the current thread in the flattened 1D grid
+    int row = by * blockDim.x + tx;
+    
+    // Initialize the accumulator for the partial sum in the tile
+    FLOAT_TYPE Pvalue = 0.0;
+
+    // Loop over the tiles of the input matrices
+    for (int t = 0; t < (k - 1) / TILE_WIDTH_RATIO_K + 1; ++t) {
+        // Load the tiles into shared memory
+        if (t * TILE_WIDTH_RATIO_K + tx < k && row < n) {
+            N_s[tx][row] = N[row * k + t * TILE_WIDTH_RATIO_K + tx];  // Fix shared memory access
+        } else {
+            N_s[tx][row] = 0.0;
+        }
+
+        // Synchronize to make sure the tile is loaded before computing
+        __syncthreads();
+
+        // Compute the partial sum in the tile
+        for (int i = 0; i < TILE_WIDTH_RATIO_K; ++i) {
+            if (i * TILE_WIDTH_N + bx < m) {
+                Pvalue += M[(i * TILE_WIDTH_N + bx) * k + t * TILE_WIDTH_RATIO_K + tx] * N_s[i][row];
+            }
+        }
+
+        // Synchronize to make sure the tile computation is done before loading the next tile
+        __syncthreads();
+    }
+
+    // Write the final result to output matrix
+    if (row < n && bx < m) {
+        P[row * m + bx] = Pvalue;
+    }
+}
+void matrixMultiplyGPU(FLOAT_TYPE* P,
+	FLOAT_TYPE* M,
+	FLOAT_TYPE* N,
+	int numMRows,
+	int numNColumns,
+	int numMColumns)
+{
+	//@@ Initialize the grid and block dimensions here
+
+	dim3 dimGrid((numMRows - 1) / TILE_WIDTH_M + 1, (numNColumns - 1) / TILE_WIDTH_N + 1);
+	dim3 dimBlock(TILE_WIDTH_M, 1);
+	matrixMultiply << <dimGrid, dimBlock >> > (P, M, N, numMRows, numNColumns, numMColumns);
+
+	getLastCudaError("matrixMultiply failed\n");
+	cudaDeviceSynchronize();
+}
